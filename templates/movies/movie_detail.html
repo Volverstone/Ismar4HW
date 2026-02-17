@@ -1,7 +1,29 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h1>{{ movie.title }}</h1>
-<p>{{ movie.description }}</p>
-<p>Категория: {{ movie.category.name }}</p>
+
+<form method="get">
+    <input type="text" name="search" placeholder="Поиск">
+    <button type="submit">Искать</button>
+</form>
+
+{% for movie in movies %}
+    <h3>
+        <a href="{% url 'movie_detail' movie.id %}">
+            {{ movie.title }}
+        </a>
+    </h3>
+{% endfor %}
+
+{% if is_paginated %}
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
+    {% endif %}
+{% endif %}
+
 {% endblock %}
